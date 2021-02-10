@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import logo from "./logo.svg";
+import "./App.css";
 
-function App() {
-  return (
+import Ready from "./Ready";
+import Start from "./Start";
+import Vibration from "./Vibration";
+import VibrationFeel from "./VibrationFeel";
+import Confidence from "./Confidence";
+import End from "./End";
+
+const App = () => (
+  <Router>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Switch>
+        <Route path="/ready">
+          <Ready />
+        </Route>
+
+        <Route path="/vibration/:index/feel" exact>
+          <VibrationFeel />
+        </Route>
+        <Route path="/vibration/:index/confidence" exact>
+          <Confidence />
+        </Route>
+        <Route path="/vibration/:index" exact>
+          <Vibration />
+        </Route>
+        <Route path="/end" exact>
+          <End />
+        </Route>
+        <Route path="/">
+          <Start />
+        </Route>
+      </Switch>
     </div>
-  );
-}
+  </Router>
+);
 
 export default App;

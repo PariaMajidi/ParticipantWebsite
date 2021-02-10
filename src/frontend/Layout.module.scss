@@ -1,0 +1,16 @@
+.Layout {
+  height: 100vh;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 1rem;
+
+  .title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    padding-bottom: 3rem;
+  }
+}
