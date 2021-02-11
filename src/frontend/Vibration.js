@@ -32,9 +32,7 @@ const Vibration = () => {
       dispatch(
         setCurrentSound({ vibration: filename, endAudioTime: getTime() })
       );
-      setTimeout(() => {
-        history.push(`/vibration/${index}/feel`);
-      }, 2000);
+      history.push(`/vibration/${index}/feel`);
     });
 
     interval.current = setTimeout(() => {
