@@ -7,9 +7,9 @@ const ExcelJS = require("exceljs");
 const winston = require("winston");
 
 const shuffle = require("./utils/shuffle");
-const { nextParticipant, getParticipant } = require("./utils/participant");
 
 const soundsDirname = path.join(__dirname, "../../sounds");
+const buildDirname = path.join(__dirname, "../../build");
 
 const dababaseFilename = path.join(__dirname, "../../database.xlsx");
 
@@ -78,7 +78,7 @@ app.get("/api/sounds", (req, res) => {
 });
 
 app.post("/api/vibration", (req, res) => {
-  const row = { ...req.body, participant: "foo" };
+  const row = req.body;
   worksheet.addRow(row).commit();
   workbook.xlsx.writeFile(dababaseFilename);
   logger.info("response", { row });
@@ -87,5 +87,6 @@ app.post("/api/vibration", (req, res) => {
 });
 
 app.use("/content/sounds", express.static(soundsDirname));
+app.use(express.static(buildDirname));
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

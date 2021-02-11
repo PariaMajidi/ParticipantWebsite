@@ -9,6 +9,7 @@ import Vibration from "./Vibration";
 import VibrationFeedback from "./VibrationFeedback";
 import Confidence from "./Confidence";
 import End from "./End";
+import Login from "./Login";
 
 import { fetchSounds } from "./redux/sounds";
 
@@ -39,8 +40,11 @@ const App = () => {
           <Route path="/end" exact>
             <End />
           </Route>
-          <Route path="/">
+          <Route path="/start">
             <Start />
+          </Route>
+          <Route path="/" exact>
+            <Login />
           </Route>
         </Switch>
       </div>

@@ -21,10 +21,10 @@ const Confidence = () => {
   const soundCount = useSelector(getSoundCount);
   const dispatch = useDispatch();
 
-  const onClick = (choice, index) => async () => {
+  const onClick = (choice, likertScaleIndex) => async () => {
     const newIndex = parseInt(index, 10) + 1;
 
-    dispatch(setCurrentSound({ likertScale: index + 1 }));
+    dispatch(setCurrentSound({ likertScale: likertScaleIndex + 1 }));
     await dispatch(sendFeedback());
 
     if (newIndex > soundCount) {
