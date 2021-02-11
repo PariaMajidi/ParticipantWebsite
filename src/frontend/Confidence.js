@@ -1,9 +1,9 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Layout from "./Layout";
-import { getSoundCount } from "./redux/sounds";
+import { getSoundCount, sendFeedback, setCurrentSound } from "./redux/sounds";
 import style from "./Confidence.module.scss";
 
 const choices = [
@@ -19,10 +19,15 @@ const Confidence = () => {
   const { index } = useParams();
 
   const soundCount = useSelector(getSoundCount);
+  const dispatch = useDispatch();
 
-  const onClick = (choice) => () => {
+  const onClick = (choice, index) => async () => {
     const newIndex = parseInt(index, 10) + 1;
-    if (newIndex === soundCount) {
+
+    dispatch(setCurrentSound({ likertScale: index + 1 }));
+    await dispatch(sendFeedback());
+
+    if (newIndex > soundCount) {
       history.push(`/end`);
     } else {
       history.push(`/vibration/${newIndex}`);

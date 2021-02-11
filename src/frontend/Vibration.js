@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Layout from "./Layout";
 import Loader from "./Loader";
-import { getSound } from "./redux/sounds";
+import { getSound, setCurrentSound } from "./redux/sounds";
+import getTime from "./utils/date";
 
 import style from "./Vibration.module.scss";
 
@@ -19,33 +20,41 @@ const Vibration = () => {
 
   const { index } = useParams();
 
-  const sound = useSelector(getSound(parseInt(index, 10) - 1));
+  const filename = useSelector(getSound(parseInt(index, 10) - 1));
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!sound) return;
-
-    const { filename, repetition } = sound;
+    if (!filename) return;
     audio.current = new Audio(`/content/sounds/${filename}.wav`);
 
     audio.current.addEventListener("ended", (event) => {
+      dispatch(
+        setCurrentSound({ vibration: filename, endAudioTime: getTime() })
+      );
       setTimeout(() => {
         history.push(`/vibration/${index}/feel`);
       }, 2000);
     });
 
-    interval.current = setInterval(() => {
+    interval.current = setTimeout(() => {
       if (countDown === 1) {
         clearInterval(interval.current);
         play(true);
 
-        audio.current.play();
+        audio.current
+          .play()
+          .then(() => {})
+          .catch((error) => {
+            console.log("error", error);
+          });
       } else {
         setCountDown(countDown - 1);
       }
     }, 1000);
 
     return () => clearInterval(interval.current);
-  }, [countDown, history, index]);
+  }, [filename, countDown]);
 
   return (
     <Layout title={`Vibration Number ${index}`}>

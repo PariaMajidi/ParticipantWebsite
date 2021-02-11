@@ -1,11 +1,55 @@
 const path = require("path");
+const fs = require("fs");
 const express = require("express");
 const bodyParser = require("body-parser");
 const glob = require("glob");
+const ExcelJS = require("exceljs");
+const winston = require("winston");
 
 const shuffle = require("./utils/shuffle");
+const { nextParticipant, getParticipant } = require("./utils/participant");
 
 const soundsDirname = path.join(__dirname, "../../sounds");
+
+const dababaseFilename = path.join(__dirname, "../../database.xlsx");
+
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.json(),
+  defaultMeta: { service: "user-service" },
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    }),
+  ],
+});
+
+const workbook = new ExcelJS.Workbook();
+let worksheet = null;
+
+if (fs.existsSync(path)) {
+  workbook.xlsx.readFile(dababaseFilename);
+  worksheet = workbook.getWorksheet("Results");
+} else {
+  worksheet = workbook.addWorksheet("Results");
+
+  const opts = {
+    alignment: { vertical: "bottom", horizontal: "right" },
+    width: 32,
+  };
+
+  worksheet.columns = [
+    { header: "VIBRATION", key: "vibration", ...opts },
+    { header: "PARTICIPANT", key: "participant", ...opts },
+    { header: "DIRECTION", key: "direction", ...opts },
+    { header: "LIKERTSCALE", key: "likertScale", ...opts },
+    { header: "SELECTION-TIME", key: "selectionTime", ...opts },
+    { header: "END-AUDIO-TIME", key: "endAudioTime", ...opts },
+    { header: "REPETITION", key: "repetition", ...opts },
+  ];
+
+  workbook.xlsx.writeFile(dababaseFilename);
+}
 
 const repeat = 4;
 
@@ -15,14 +59,10 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const arrayOf = (filename) =>
-  new Array(repeat)
-    .fill(0)
-    .map((r, index) => ({ filename, repetition: index + 1 }));
+const arrayOf = (filename) => new Array(repeat).fill(0).map((r) => filename);
 
 app.get("/api/sounds", (req, res) => {
   glob("**/*.wav", { cwd: soundsDirname }, (error, files) => {
-    console.error("error", error);
     if (error) {
       res.status(500);
       return;
@@ -37,15 +77,13 @@ app.get("/api/sounds", (req, res) => {
   });
 });
 
-app.get("/api/hello", (req, res) => {
-  res.send({ express: "Hello From Express" });
-});
+app.post("/api/vibration", (req, res) => {
+  const row = { ...req.body, participant: "foo" };
+  worksheet.addRow(row).commit();
+  workbook.xlsx.writeFile(dababaseFilename);
+  logger.info("response", { row });
 
-app.post("/api/world", (req, res) => {
-  console.log(req.body);
-  res.send(
-    `I received your POST request. This is what you sent me: ${req.body.post}`
-  );
+  res.send({});
 });
 
 app.use("/content/sounds", express.static(soundsDirname));

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import logo from "./logo.svg";
 import "./App.css";
 
 import Ready from "./Ready";
@@ -18,7 +17,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchSounds());
-  }, [dispatch]);
+  }, []);
 
   return (
     <Router>

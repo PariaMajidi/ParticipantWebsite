@@ -6,6 +6,8 @@
 
 yarn 
 
+yarn server
+
 yarn start
 
 
