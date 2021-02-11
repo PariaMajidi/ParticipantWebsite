@@ -6,7 +6,7 @@ import Button from "./Button";
 
 import style from "./VibrationFeel.module.scss";
 
-const VibrationFeel = () => {
+const VibrationFeedback = () => {
   const history = useHistory();
 
   const { index } = useParams();
@@ -37,4 +37,4 @@ const VibrationFeel = () => {
   );
 };
 
-export default VibrationFeel;
+export default VibrationFeedback;

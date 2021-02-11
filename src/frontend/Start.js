@@ -18,6 +18,8 @@ const Start = () => {
   );
 
   const start = () => {
+    nextPage();
+    return;
     if (
       document.documentElement &&
       document.documentElement.requestFullscreen

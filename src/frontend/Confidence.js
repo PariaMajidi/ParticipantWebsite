@@ -1,8 +1,9 @@
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import Layout from "./Layout";
-
+import { getSoundCount } from "./redux/sounds";
 import style from "./Confidence.module.scss";
 
 const choices = [
@@ -17,9 +18,11 @@ const Confidence = () => {
   const history = useHistory();
   const { index } = useParams();
 
+  const soundCount = useSelector(getSoundCount);
+
   const onClick = (choice) => () => {
     const newIndex = parseInt(index, 10) + 1;
-    if (newIndex === 4) {
+    if (newIndex === soundCount) {
       history.push(`/end`);
     } else {
       history.push(`/vibration/${newIndex}`);
