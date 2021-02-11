@@ -17,8 +17,8 @@ On terminal
 yarn 
 
 # on first terminal 
-yarn server
+yarn start
 
 # on second terminal
-yarn start
+yarn frontend
 ```
