@@ -1,39 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import Layout from "./Layout";
 import Button from "./Button";
-import useEventListener from "./hooks/useEventListener";
+import { setCurrentSound } from "./redux/sounds";
+
 import style from "./Start.module.scss";
 
 const Start = () => {
+  const [participant, setParticipant] = useState("");
+
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  const nextPage = () => history.push("/ready");
+  const onSubmit = (event) => {
+    event.preventDefault();
 
-  useEventListener(
-    "fullscreenchange",
-    () => document.fullscreenElement && nextPage(),
-    document.documentElement
-  );
-
-  const start = () => {
-    nextPage();
-    return;
-    if (
-      document.documentElement &&
-      document.documentElement.requestFullscreen
-    ) {
-      document.documentElement.requestFullscreen();
-    } else {
-      nextPage();
-    }
+    dispatch(setCurrentSound({ participant }));
+    history.push("/ready");
   };
+
   return (
     <Layout>
-      <Button className={style.button} onClick={start}>
-        Start
-      </Button>
+      <form onSubmit={onSubmit} className={style.form}>
+        <input
+          placeholder="Participant id"
+          type="text"
+          className={style.input}
+          onChange={(e) => setParticipant(e.target.value)}
+        />
+        <Button type="submit" disabled={!participant}>
+          Start
+        </Button>
+      </form>
     </Layout>
   );
 };

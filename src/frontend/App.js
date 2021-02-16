@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "./App.css";
 
@@ -9,7 +14,6 @@ import Vibration from "./Vibration";
 import VibrationFeedback from "./VibrationFeedback";
 import Confidence from "./Confidence";
 import End from "./End";
-import Login from "./Login";
 
 import { fetchSounds } from "./redux/sounds";
 
@@ -43,9 +47,7 @@ const App = () => {
           <Route path="/start">
             <Start />
           </Route>
-          <Route path="/" exact>
-            <Login />
-          </Route>
+          <Redirect to="/start" />
         </Switch>
       </div>
     </Router>
