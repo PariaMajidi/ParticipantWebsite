@@ -13,14 +13,14 @@ jobs:
           persist-credentials: false
 
       - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+        env:
+          REACT_APP_CLIENT_ID: 1010153724789-cp1efnufhm21qkvn64hqoe402jfivs13.apps.googleusercontent.com
+          REACT_APP_API_KEY: AIzaSyChogZ8gZRJwkeUBcrA6kwnAOAFTk7jZ7I
         run: |
           yarn
           CI=false yarn build
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@3.7.1
-        env:
-          REACT_APP_CLIENT_ID: 1010153724789-cp1efnufhm21qkvn64hqoe402jfivs13.apps.googleusercontent.com
-          REACT_APP_API_KEY: AIzaSyChogZ8gZRJwkeUBcrA6kwnAOAFTk7jZ7I
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
