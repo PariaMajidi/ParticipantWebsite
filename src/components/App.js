@@ -14,6 +14,8 @@ import Login from "./Login";
 import SelectFolder from "./SelectFolder";
 import Setup from "./Setup";
 import Menu from "./Menu";
+import SubMenu from "./SubMenu";
+import FileList from "./FileList";
 
 import * as google from "../utils/google";
 
@@ -53,6 +55,12 @@ const App = () => {
         </Route>
         <Route path="/select-folder">
           <SelectFolder />
+        </Route>
+        <Route path="/submenu">
+          <SubMenu />
+        </Route>
+        <Route path="/file-list">
+          <FileList />
         </Route>
         <Route path="/setup">
           <Setup />

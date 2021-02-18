@@ -47,8 +47,6 @@ const Setup = () => {
         []
       );
 
-    console.log("pool", pool.length, repetitions);
-
     dispatch(setSounds(shuffle(pool)));
     history.push("/start");
   };

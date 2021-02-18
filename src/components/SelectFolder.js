@@ -20,7 +20,7 @@ const SelectFolder = () => {
     localStorage.setItem("folderId", folder);
 
     dispatch(setFolderId(folder));
-    history.push("/setup");
+    history.push("/submenu");
   };
 
   return (

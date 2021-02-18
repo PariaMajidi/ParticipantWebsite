@@ -16,7 +16,7 @@ const Menu = () => {
   return (
     <Layout>
       <ButtonList>
-        <Button.Link to="/select-folder">Experiment</Button.Link>
+        <Button.Link to="/select-folder">Start</Button.Link>
         {/* <Button onClick={() => google.writeSheet()}>Test</Button> */}
         <Button
           onClick={() => {
