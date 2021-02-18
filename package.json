@@ -19,6 +19,7 @@
     "web-vitals": "^1.0.1",
     "winston": "^3.3.3"
   },
+  "homepage": "https://pariamajidi.github.io/ParticipantWebsite/",
   "proxy": "http://localhost:5000/",
   "scripts": {
     "start": "react-scripts start",
