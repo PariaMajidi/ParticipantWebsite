@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-  useHistory,
-} from "react-router-dom";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import "./App.css";
@@ -21,7 +15,6 @@ import SelectFolder from "./SelectFolder";
 import Setup from "./Setup";
 import Menu from "./Menu";
 
-import { fetchSounds } from "../redux/sounds";
 import * as google from "../utils/google";
 
 const App = () => {
@@ -29,7 +22,6 @@ const App = () => {
   const history = useHistory();
 
   useEffect(() => {
-    // dispatch(fetchSounds());
     dispatch(
       google.initialize(() => {
         history.push("/menu");
