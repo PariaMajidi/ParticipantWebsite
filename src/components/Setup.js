@@ -12,7 +12,7 @@ import style from "./Setup.module.scss";
 
 const Setup = () => {
   const [repetitions, setRepetitions] = useState(
-    localStorage.getItem("repetitions") || 4
+    parseInt(localStorage.getItem("repetitions")) || 4
   );
 
   const folderId = useSelector(getFolderId);
@@ -28,9 +28,6 @@ const Setup = () => {
     });
   }, [folderId]);
 
-  const arrayOf = (filename) =>
-    new Array(repetitions).fill(0).map((r) => filename);
-
   const onSubmit = (event) => {
     event.preventDefault();
 
@@ -42,7 +39,15 @@ const Setup = () => {
         name,
         url: webContentLink,
       }))
-      .reduce((acc, file) => [...acc, ...arrayOf(file)], []);
+      .reduce(
+        (acc, file) => [
+          ...acc,
+          ...new Array(repetitions).fill(0).map((r) => file),
+        ],
+        []
+      );
+
+    console.log("pool", pool.length, repetitions);
 
     dispatch(setSounds(shuffle(pool)));
     history.push("/start");
@@ -57,7 +62,7 @@ const Setup = () => {
           type="number"
           defaultValue={repetitions}
           className={style.input}
-          onChange={(e) => setRepetitions(e.target.value)}
+          onChange={(e) => setRepetitions(parseInt(e.target.value))}
         />
         <Button type="submit">Select repetitions</Button>
       </form>
