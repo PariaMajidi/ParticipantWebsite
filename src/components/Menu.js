@@ -8,17 +8,16 @@ import Button from "./Button";
 
 import style from "./Menu.module.scss";
 
+import ButtonList from "./ButtonList";
+
 const Menu = () => {
   const history = useHistory();
 
   return (
     <Layout>
-      <div className={style.buttons}>
-        <Button onClick={() => history.push("/select-folder")}>
-          Experiment
-        </Button>
-        <Button onClick={() => google.writeSheet()}>Test</Button>
-
+      <ButtonList>
+        <Button.Link to="/select-folder">Experiment</Button.Link>
+        {/* <Button onClick={() => google.writeSheet()}>Test</Button> */}
         <Button
           onClick={() => {
             google.signOut();
@@ -27,7 +26,7 @@ const Menu = () => {
         >
           Logout
         </Button>
-      </div>
+      </ButtonList>
     </Layout>
   );
 };

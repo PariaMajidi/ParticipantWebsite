@@ -57,6 +57,7 @@ export const sendFeedback = () => (dispatch, getState) => {
 
   return google.writeSheet([
     feedback.vibration,
+    feedback.index,
     feedback.participant,
     feedback.direction,
     feedback.likertScale,

@@ -31,7 +31,7 @@ const Vibration = () => {
 
     audio.current.addEventListener("ended", (event) => {
       dispatch(
-        setCurrentFeedback({ vibration: name, endAudioTime: getTime() })
+        setCurrentFeedback({ vibration: name, endAudioTime: getTime(), index })
       );
       history.push(`/vibration/${index}/feel`);
     });

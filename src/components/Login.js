@@ -9,8 +9,6 @@ const Login = () => {
   return (
     <Layout>
       <Button onClick={google.signIn}>Login</Button>
-
-      <Button onClick={google.signOut}>Logout</Button>
     </Layout>
   );
 };
