@@ -38,7 +38,7 @@ export const writeSheet = async (row) => {
 
   gapi.client.sheets.spreadsheets.values
     .append({
-      spreadsheetId: "1zsX46IRkQFkZVG_M5v7Y9WMjYF4Fxq45vt2F0FzxTFM",
+      spreadsheetId: process.env.REACT_APP_DATABASE,
       resource: { values, majorDimension: "ROWS" },
       range: "Sheet1",
       insertDataOption: "INSERT_ROWS",

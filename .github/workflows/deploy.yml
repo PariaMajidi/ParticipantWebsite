@@ -16,6 +16,7 @@ jobs:
         env:
           REACT_APP_CLIENT_ID: 1010153724789-cp1efnufhm21qkvn64hqoe402jfivs13.apps.googleusercontent.com
           REACT_APP_API_KEY: AIzaSyChogZ8gZRJwkeUBcrA6kwnAOAFTk7jZ7I
+          REACT_APP_DATABASE: 1nX6gZwtfdshun4kGOTTaefRJDDtp3B-T6UfGRVDL7_k
         run: |
           yarn
           CI=false yarn build
