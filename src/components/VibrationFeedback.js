@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { setCurrentSound } from "./redux/sounds";
+import { setCurrentFeedback } from "../redux/sounds";
 import Layout from "./Layout";
 import Button from "./Button";
-import getTime from "./utils/date";
+import getTime from "../utils/date";
 
 import style from "./VibrationFeedback.module.scss";
 
@@ -17,7 +17,7 @@ const VibrationFeedback = () => {
   const dispatch = useDispatch();
 
   const giveFeedback = (direction) => () => {
-    dispatch(setCurrentSound({ selectionTime: getTime(), direction }));
+    dispatch(setCurrentFeedback({ selectionTime: getTime(), direction }));
     history.push(`/vibration/${index}/confidence`);
   };
 

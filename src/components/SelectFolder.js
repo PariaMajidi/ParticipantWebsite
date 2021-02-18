@@ -4,12 +4,12 @@ import { useHistory } from "react-router-dom";
 
 import Layout from "./Layout";
 import Button from "./Button";
-import { setCurrentSound } from "./redux/sounds";
+import { setFolderId } from "../redux/sounds";
 
 import style from "./Start.module.scss";
 
-const Start = () => {
-  const [participant, setParticipant] = useState("");
+const SelectFolder = () => {
+  const [folder, setFolder] = useState(localStorage.getItem("folderId"));
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -17,25 +17,28 @@ const Start = () => {
   const onSubmit = (event) => {
     event.preventDefault();
 
-    dispatch(setCurrentSound({ participant }));
-    history.push("/ready");
+    localStorage.setItem("folderId", folder);
+
+    dispatch(setFolderId(folder));
+    history.push("/setup");
   };
 
   return (
     <Layout>
       <form onSubmit={onSubmit} className={style.form}>
         <input
-          placeholder="Participant id"
+          placeholder="Drive Folder id"
           type="text"
+          defaultValue={folder}
           className={style.input}
-          onChange={(e) => setParticipant(e.target.value)}
+          onChange={(e) => setFolder(e.target.value)}
         />
-        <Button type="submit" disabled={!participant}>
-          Start
+        <Button type="submit" disabled={!folder}>
+          Select folder
         </Button>
       </form>
     </Layout>
   );
 };
 
-export default Start;
+export default SelectFolder;

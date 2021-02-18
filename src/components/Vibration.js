@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 
 import Layout from "./Layout";
 import Loader from "./Loader";
-import { getSound, setCurrentSound } from "./redux/sounds";
-import getTime from "./utils/date";
+import { getSound, setCurrentFeedback } from "../redux/sounds";
+import getTime from "../utils/date";
 
 import style from "./Vibration.module.scss";
 
@@ -20,19 +20,24 @@ const Vibration = () => {
 
   const { index } = useParams();
 
-  const filename = useSelector(getSound(parseInt(index, 10) - 1));
+  const { name, url } = useSelector(getSound(parseInt(index, 10) - 1));
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!filename) return;
-    audio.current = new Audio(`/content/sounds/${filename}.wav`);
+    if (!name) return;
+
+    audio.current = new Audio(url);
 
     audio.current.addEventListener("ended", (event) => {
       dispatch(
-        setCurrentSound({ vibration: filename, endAudioTime: getTime() })
+        setCurrentFeedback({ vibration: name, endAudioTime: getTime() })
       );
       history.push(`/vibration/${index}/feel`);
+    });
+
+    audio.current.addEventListener("error", (event) => {
+      console.log("error");
     });
 
     interval.current = setTimeout(() => {
@@ -52,7 +57,7 @@ const Vibration = () => {
     }, 1000);
 
     return () => clearInterval(interval.current);
-  }, [filename, countDown]);
+  }, [name, countDown]);
 
   return (
     <Layout title={`Vibration Number ${index}`}>

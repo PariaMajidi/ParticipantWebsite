@@ -22,3 +22,13 @@ yarn start
 # on second terminal
 yarn frontend
 ```
+
+```
+ngrok http -region=us -hostname=solaria.ngrok.io 3001
+
+```
+
+
+## Google drive api 
+
+- https://developers.google.com/docs/api/quickstart/js

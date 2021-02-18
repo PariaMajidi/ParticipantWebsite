@@ -3,7 +3,11 @@ import { useHistory, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import Layout from "./Layout";
-import { getSoundCount, sendFeedback, setCurrentSound } from "./redux/sounds";
+import {
+  getSoundCount,
+  sendFeedback,
+  setCurrentFeedback,
+} from "../redux/sounds";
 import style from "./Confidence.module.scss";
 
 const choices = [
@@ -24,7 +28,7 @@ const Confidence = () => {
   const onClick = (choice, likertScaleIndex) => async () => {
     const newIndex = parseInt(index, 10) + 1;
 
-    dispatch(setCurrentSound({ likertScale: likertScaleIndex + 1 }));
+    dispatch(setCurrentFeedback({ likertScale: likertScaleIndex + 1 }));
     await dispatch(sendFeedback());
 
     if (newIndex > soundCount) {
