@@ -8,7 +8,6 @@
 
 ## Setup sounds 
 
-Add sounds with .wav extension in folder _sounds_.
 
 ## Getting started 
 
@@ -16,15 +15,11 @@ On terminal
 ```bash 
 yarn 
 
-# on first terminal 
 yarn start
-
-# on second terminal
-yarn frontend
 ```
 
 ```
-ngrok http -region=us -hostname=solaria.ngrok.io 3001
+ngrok http -region=us --host-header=rewrite -hostname=solaria.ngrok.io 3000
 
 ```
 

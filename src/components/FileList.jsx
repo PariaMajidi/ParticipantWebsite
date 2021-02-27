@@ -1,42 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
-import Layout from "./Layout";
-import { getFolderId } from "../redux/sounds";
+import Layout from './Layout'
+import { getFolderId } from '../redux/sounds'
 
-import { fetchSounds } from "../utils/google";
+import { fetchSounds } from '../utils/google'
 
-import style from "./FileList.module.scss";
+import style from './FileList.module.scss'
 
 const FileList = () => {
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState([])
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true)
 
-  const folderId = useSelector(getFolderId);
+  const folderId = useSelector(getFolderId)
 
   useEffect(() => {
-    fetchSounds(folderId).then((files) => {
-      setFiles(files);
-      setLoading(false);
-    });
-  });
+    fetchSounds(folderId).then(files => {
+      setFiles(files)
+      setLoading(false)
+    })
+  })
 
   return (
-    <Layout title="Sounds">
+    <Layout title='Sounds'>
       {loading ? <span className={style.loading}>loading</span> : null}
-      {files.map((file) => (
+      {files.map(file => (
         <div className={style.sound}>
           <div className={style.name}>{file.name}</div>
 
-          <audio controls src={file.webContentLink}>
+          <audio controls src={file.webContentLink} type='audio/wav'>
             Your browser does not support the
             <code>audio</code> element.
           </audio>
         </div>
       ))}
     </Layout>
-  );
-};
+  )
+}
 
-export default FileList;
+export default FileList
