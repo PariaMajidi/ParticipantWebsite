@@ -22,11 +22,25 @@ export const fetchSounds = async folderId => {
 
     console.log('result', result)
 
-    return result.result.files
+    return result?.result?.files || []
   } catch (error) {
     console.error('error', error)
   }
+
+  console.log('oups')
+
+  return []
 }
+
+// base64ArrayBuffer
+
+export const downloadFile = fileId =>
+  gapi.client.drive.files
+    .get({
+      fileId: fileId,
+      alt: 'media',
+    })
+    .then(result => btoa(result.body))
 
 export const writeSheet = async row => {
   // const result = await gapi.client.sheets.spreadsheets.values.get({

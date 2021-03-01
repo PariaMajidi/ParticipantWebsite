@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { HashRouter as Router } from 'react-router-dom'
 import store from './redux/store'
+// import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 import './index.css'
 import App from './components/App'
@@ -24,14 +25,4 @@ ReactDOM.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals()
 
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', function() {
-//     navigator.serviceWorker.register('/sw.js').then(function(registration) {
-//       // Registration was successful
-//       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-//     }, function(err) {
-//       // registration failed :(
-//       console.log('ServiceWorker registration failed: ', err);
-//     });
-//   });
-// }
+// serviceWorkerRegistration.register()
