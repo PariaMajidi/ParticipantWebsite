@@ -8,27 +8,6 @@ import { fetchSounds, downloadFile } from '../utils/google'
 
 import style from './FileList.module.scss'
 
-// const toDataURL = url =>
-//   fetch(url, {
-//     mode: 'cors',
-//     headers: {
-//       'Access-Control-Allow-Origin': '*',
-//     },
-//   })
-//     .then(response => {
-//       console.log('response', response)
-//       return response.blob()
-//     })
-//     .then(
-//       blob =>
-//         new Promise((resolve, reject) => {
-//           const reader = new FileReader()
-//           reader.onloadend = () => resolve(reader.result)
-//           reader.onerror = reject
-//           reader.readAsDataURL(blob)
-//         })
-//     )
-
 const FileList = () => {
   // const files = useRef([])
   // const [sounds, setSounds] = useState({})
@@ -40,56 +19,40 @@ const FileList = () => {
   console.log('folderId', folderId)
 
   useEffect(() => {
-    setTimeout(() => {
-      fetchSounds(folderId).then(newFiles => {
-        // const newFilesWithSound = [...newFiles]
+    fetchSounds(folderId).then(newFiles => {
+      const newFilesWithSound = []
 
-        // const
-        // files.current = newFiles
-        // setFiles(files)
+      setLoading(false)
 
-        const promises = newFiles.map(async file => {
-          const base64 = await downloadFile(file.id)
-
-          return {
+      for (const index in newFiles) {
+        const file = newFiles[index]
+        console.log('file')
+        downloadFile(file.id).then(base64 => {
+          newFilesWithSound.push({
             ...file,
             dataUrl: `data:audio/wav;base64,${base64}`,
-          }
+          })
+
+          console.log('newFiles')
+
+          setFiles([...newFilesWithSound])
         })
+      }
 
-        Promise.all(promises).then(filesWithDataUrl => {
-          setLoading(false)
-          setFiles(filesWithDataUrl)
+      newFiles.forEach(file => {
+        console.log('file')
+        downloadFile(file.id).then(base64 => {
+          newFilesWithSound.push({
+            ...file,
+            dataUrl: `data:audio/wav;base64,${base64}`,
+          })
+
+          console.log('newFiles')
+
+          setFiles([...newFilesWithSound])
         })
-
-        // newFiles.forEach((file, index) => {
-        //   downloadFile(file.id).then(base64 => {
-        //     newFilesWithSound[index] = {
-        //       ...file,
-        //       dataUrl: `data:audio/wav;base64,${base64}`,
-        //     }
-
-        //     console.log('newFiles')
-
-        //     setFiles(newFilesWithSound)
-        //   })
-
-        // toDataURL(file.webContentLink)
-        //   .then(dataUrl => {
-        //     console.log('dataUrl', dataUrl)
-        //     newFilesWithSound[index] = {
-        //       ...file,
-        //       dataUrl,
-        //     }
-
-        //     setFiles(newFilesWithSound)
-        //   })
-        //   .catch(error => {
-        //     console.log('error', error)
-        //   })
-        // })
       })
-    }, 1000)
+    })
   }, [])
   return (
     <Layout title='Sounds'>
