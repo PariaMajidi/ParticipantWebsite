@@ -10,7 +10,6 @@ const DISCOVERY_DOCS = [
 // included, separated by spaces.
 const SCOPES =
   ' https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets '
-const arrayOf = filename => new Array(repeat).fill(0).map(r => filename)
 
 export const fetchSounds = async folderId => {
   try {
@@ -18,6 +17,7 @@ export const fetchSounds = async folderId => {
       q: `mimeType='audio/wav' and '${folderId}' in parents`,
       spaces: 'drive',
       fields: 'files(id, webContentLink, webViewLink, name)',
+      pageSize: 1000,
     })
 
     console.log('result', result)
