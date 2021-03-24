@@ -27,7 +27,23 @@ export const fetchSounds = async folderId => {
     console.error('error', error)
   }
 
-  console.log('oups')
+  return []
+}
+
+export const fetchDatabase = async folderId => {
+  try {
+    const result = await gapi.client.drive.files.list({
+      q: `name='Database' and '${folderId}' in parents`,
+      spaces: 'drive',
+      fields: 'files(id)',
+      pageSize: 1000,
+    })
+    console.log('database', result?.result?.files)
+
+    return result?.result?.files[0]?.id
+  } catch (error) {
+    console.error('error', error)
+  }
 
   return []
 }
@@ -42,7 +58,7 @@ export const downloadFile = fileId =>
     })
     .then(result => btoa(result.body))
 
-export const writeSheet = async row => {
+export const writeSheet = async (row, database) => {
   // const result = await gapi.client.sheets.spreadsheets.values.get({
   //   spreadsheetId: "1zsX46IRkQFkZVG_M5v7Y9WMjYF4Fxq45vt2F0FzxTFM",
   //   range: "Sheet1",
@@ -52,7 +68,7 @@ export const writeSheet = async row => {
 
   gapi.client.sheets.spreadsheets.values
     .append({
-      spreadsheetId: process.env.REACT_APP_DATABASE,
+      spreadsheetId: database,
       resource: { values, majorDimension: 'ROWS' },
       range: 'Sheet1',
       insertDataOption: 'INSERT_ROWS',

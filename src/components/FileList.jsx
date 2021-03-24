@@ -8,6 +8,16 @@ import { fetchSounds, downloadFile } from '../utils/google'
 
 import style from './FileList.module.scss'
 
+const byName = (a, b) => {
+  if (a.name < b.name) {
+    return -1
+  }
+  if (a.name > b.name) {
+    return 1
+  }
+  return 0
+}
+
 const FileList = () => {
   const [files, setFiles] = useState([])
 
@@ -36,7 +46,7 @@ const FileList = () => {
   return (
     <Layout title='Sounds'>
       {loading ? <span className={style.loading}>loading</span> : null}
-      {files.map(file => (
+      {files.sort(byName).map(file => (
         <div className={style.sound} key={file.id}>
           <div className={style.name}>{file.name}</div>
 

@@ -1,45 +1,45 @@
-import React from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react'
+import { useHistory, useParams } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 
-import Layout from "./Layout";
+import Layout from './Layout'
 import {
   getSoundCount,
   sendFeedback,
   setCurrentFeedback,
-} from "../redux/sounds";
-import style from "./Confidence.module.scss";
+} from '../redux/sounds'
+import style from './Confidence.module.scss'
 
 const choices = [
-  "Very confusing",
-  "Confusing",
-  "Neutral",
-  "Clear",
-  "Very clear",
-];
+  'Very confusing',
+  'Confusing',
+  'Neutral',
+  'Clear',
+  'Very clear',
+]
 
 const Confidence = () => {
-  const history = useHistory();
-  const { index } = useParams();
+  const history = useHistory()
+  const { index } = useParams()
 
-  const soundCount = useSelector(getSoundCount);
-  const dispatch = useDispatch();
+  const soundCount = useSelector(getSoundCount)
+  const dispatch = useDispatch()
 
   const onClick = (choice, likertScaleIndex) => async () => {
-    const newIndex = parseInt(index, 10) + 1;
+    const newIndex = parseInt(index, 10) + 1
 
-    dispatch(setCurrentFeedback({ likertScale: likertScaleIndex + 1 }));
-    await dispatch(sendFeedback());
+    dispatch(setCurrentFeedback({ likertScale: likertScaleIndex + 1 }))
+    await dispatch(sendFeedback())
 
     if (newIndex > soundCount) {
-      history.push(`/end`);
+      history.push(`/end`)
     } else {
-      history.push(`/vibration/${newIndex}`);
+      history.push(`/vibration/${newIndex}`)
     }
-  };
+  }
 
   return (
-    <Layout title="How confident you answered the question?">
+    <Layout title='How clear the vibration was to show you the direction?'>
       <div className={style.choices}>
         <div className={style.bar} />
         {choices.map((choice, index) => (
@@ -55,7 +55,7 @@ const Confidence = () => {
       </div>
       <div className={style.buttons}>...</div>
     </Layout>
-  );
-};
+  )
+}
 
-export default Confidence;
+export default Confidence
