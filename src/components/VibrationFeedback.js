@@ -1,44 +1,44 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect, useRef } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
-import { setCurrentFeedback } from "../redux/sounds";
-import Layout from "./Layout";
-import Button from "./Button";
-import getTime from "../utils/date";
+import { setCurrentFeedback } from '../redux/sounds'
+import Layout from './Layout'
+import Button from './Button'
+import getTime from '../utils/date'
 
-import style from "./VibrationFeedback.module.scss";
+import style from './VibrationFeedback.module.scss'
 
 const VibrationFeedback = () => {
-  const history = useHistory();
+  const history = useHistory()
 
-  const { index } = useParams();
+  const { index } = useParams()
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const giveFeedback = (direction) => () => {
-    dispatch(setCurrentFeedback({ selectionTime: getTime(), direction }));
-    history.push(`/vibration/${index}/confidence`);
-  };
+  const giveFeedback = direction => () => {
+    dispatch(setCurrentFeedback({ selectionTime: getTime(), direction }))
+    history.push(`/vibration/${index}/confidence`)
+  }
 
   return (
-    <Layout title="What did you feel?">
+    <Layout title='What direction did you feel?'>
       <div className={style.buttons}>
         <div className={style.left}>
-          <Button className={style.button} onClick={giveFeedback("left")}>
-            <i className="fas fa-arrow-left"></i>
+          <Button className={style.button} onClick={giveFeedback('left')}>
+            <i className='fas fa-arrow-left'></i>
           </Button>
           <div className={style.label}>Left</div>
         </div>
         <div className={style.right}>
-          <Button className={style.button} onClick={giveFeedback("right")}>
-            <i className="fas fa-arrow-right"></i>
+          <Button className={style.button} onClick={giveFeedback('right')}>
+            <i className='fas fa-arrow-right'></i>
           </Button>
           <div className={style.label}>Right</div>
         </div>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default VibrationFeedback;
+export default VibrationFeedback

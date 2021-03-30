@@ -39,7 +39,7 @@ const Confidence = () => {
   }
 
   return (
-    <Layout title='How clear the vibration was to show you the direction?'>
+    <Layout title='How clearly did the vibration show the direction?'>
       <div className={style.choices}>
         <div className={style.bar} />
         {choices.map((choice, index) => (
