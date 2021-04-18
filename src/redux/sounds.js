@@ -70,11 +70,20 @@ export const sendFeedback = () => (dispatch, getState) => {
       feedback.index,
       feedback.participant,
       feedback.direction,
-      feedback.likertScale,
+      '',
       feedback.selectionTime,
       feedback.endAudioTime,
       getState().repetitions[feedback.vibration],
     ],
+    database
+  )
+}
+
+export const sendGlobalFeedback = () => (dispatch, getState) => {
+  const { feedback, database } = getState()
+
+  return google.writeSheet(
+    ['', '', feedback.participant, '', feedback.likertScale, '', '', ''],
     database
   )
 }

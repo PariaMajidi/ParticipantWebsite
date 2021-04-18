@@ -59,11 +59,6 @@ export const downloadFile = fileId =>
     .then(result => btoa(result.body))
 
 export const writeSheet = async (row, database) => {
-  // const result = await gapi.client.sheets.spreadsheets.values.get({
-  //   spreadsheetId: "1zsX46IRkQFkZVG_M5v7Y9WMjYF4Fxq45vt2F0FzxTFM",
-  //   range: "Sheet1",
-  // });
-
   const values = [row]
 
   gapi.client.sheets.spreadsheets.values
@@ -75,8 +70,9 @@ export const writeSheet = async (row, database) => {
       valueInputOption: 'USER_ENTERED',
     })
     .then(response => {
-      var result = response.result
+      const result = response.result
       console.log(`${result.updates.updatedCells} cells appended.`)
+      console.log(result.tableRange)
     })
     .catch(error => {
       console.log('error', error)

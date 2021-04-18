@@ -1,13 +1,9 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
 
 import Layout from './Layout'
-import {
-  getSoundCount,
-  sendFeedback,
-  setCurrentFeedback,
-} from '../redux/sounds'
+import { sendGlobalFeedback, setCurrentFeedback } from '../redux/sounds'
 import style from './Confidence.module.scss'
 
 const choices = [
@@ -19,27 +15,17 @@ const choices = [
 ]
 
 const Confidence = () => {
-  const history = useHistory()
-  const { index } = useParams()
-
-  const soundCount = useSelector(getSoundCount)
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const onClick = (choice, likertScaleIndex) => async () => {
-    const newIndex = parseInt(index, 10) + 1
-
     dispatch(setCurrentFeedback({ likertScale: likertScaleIndex + 1 }))
-    await dispatch(sendFeedback())
-
-    if (newIndex > soundCount) {
-      history.push(`/end`)
-    } else {
-      history.push(`/vibration/${newIndex}`)
-    }
+    await dispatch(sendGlobalFeedback())
+    history.push(`/end`)
   }
 
   return (
-    <Layout title='How clearly did the vibration show the direction?'>
+    <Layout title='How clearly did the vibrations show the direction?'>
       <div className={style.choices}>
         <div className={style.bar} />
         {choices.map((choice, index) => (

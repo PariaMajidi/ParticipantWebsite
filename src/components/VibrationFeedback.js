@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { setCurrentFeedback } from '../redux/sounds'
+import {
+  setCurrentFeedback,
+  sendFeedback,
+  getSoundCount,
+} from '../redux/sounds'
 import Layout from './Layout'
 import Button from './Button'
 import getTime from '../utils/date'
@@ -15,10 +19,20 @@ const VibrationFeedback = () => {
   const { index } = useParams()
 
   const dispatch = useDispatch()
+  const soundCount = useSelector(getSoundCount)
 
-  const giveFeedback = direction => () => {
+  const giveFeedback = direction => async () => {
     dispatch(setCurrentFeedback({ selectionTime: getTime(), direction }))
-    history.push(`/vibration/${index}/confidence`)
+    await dispatch(sendFeedback())
+
+    const newIndex = parseInt(index, 10) + 1
+
+    if (newIndex > soundCount) {
+      history.push(`/confidence`)
+      history.push(`/confidence`)
+    } else {
+      history.push(`/vibration/${newIndex}`)
+    }
   }
 
   return (
