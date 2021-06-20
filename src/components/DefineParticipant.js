@@ -11,7 +11,7 @@ import style from './DefineParticipant.module.scss'
 import DefineUnilateralBilateral from './DefineUnilateralBilateral'
 
 const DefineParticipant = () => {
-  const [participant, setParticipant] = useState('FOO')
+  const [participant, setParticipant] = useState('')
 
   const dispatch = useDispatch()
   const history = useHistory()

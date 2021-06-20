@@ -6,7 +6,7 @@ import Button from './Button'
 
 import style from './Ready.module.scss'
 
-import Vibration from './Vibration'
+import Game from './Game'
 
 const VibrationReadyToContinue = () => {
   const history = useHistory()
@@ -17,7 +17,7 @@ const VibrationReadyToContinue = () => {
     <Layout title='Are you ready to continue?'>
       <Button
         className={style.button}
-        onClick={() => history.push(Vibration.route.replace(':index', index))}
+        onClick={() => history.push(Game.route.replace(':index', index))}
       >
         Yes
       </Button>

@@ -6,12 +6,12 @@ import Button from './Button'
 
 import style from './Ready.module.scss'
 
-import Vibration from './Vibration'
+import Game from './Game'
 
 const Ready = () => {
   const history = useHistory()
 
-  const start = () => history.push(Vibration.route.replace(':index', 1))
+  const start = () => history.push(Game.route.replace(':index', 1))
 
   return (
     <Layout title='Are you ready?'>

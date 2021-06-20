@@ -21,6 +21,7 @@ import FileList from './FileList'
 import DefineUnilateralBilateral from './DefineUnilateralBilateral'
 import DefineGroup from './DefineGroup'
 import ConfirmGroup from './ConfirmGroup'
+import Game from './Game'
 
 import { initialize } from '../utils/google'
 
@@ -68,6 +69,9 @@ const App = () => {
           <Ready />
         </Route>
 
+        <Route path={Game.route} exact>
+          <Game />
+        </Route>
         <Route path={Vibration.route} exact>
           <Vibration />
         </Route>
