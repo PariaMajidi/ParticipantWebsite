@@ -1,10 +1,16 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { useHistory, useParams } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import Layout from './Layout'
-import { sendGlobalFeedback, setCurrentFeedback } from '../redux/sounds'
-import style from './Confidence.module.scss'
+import {
+  sendGlobalFeedback,
+  setCurrentFeedback,
+  incrementGroup,
+} from '../redux/sounds'
+import style from './DirectionClarity.module.scss'
+
+import EndMenu from './EndMenu'
 
 const choices = [
   'Very confusing',
@@ -14,14 +20,16 @@ const choices = [
   'Very clear',
 ]
 
-const Confidence = () => {
+const DirectionClarity = () => {
   const dispatch = useDispatch()
   const history = useHistory()
 
   const onClick = (choice, likertScaleIndex) => async () => {
-    dispatch(setCurrentFeedback({ likertScale: likertScaleIndex + 1 }))
+    const toUpdate = { directionClarityLikertScale: likertScaleIndex + 1 }
+    dispatch(setCurrentFeedback(toUpdate))
     await dispatch(sendGlobalFeedback())
-    history.push(`/end`)
+    await dispatch(incrementGroup())
+    history.push(EndMenu.route)
   }
 
   return (
@@ -44,4 +52,6 @@ const Confidence = () => {
   )
 }
 
-export default Confidence
+DirectionClarity.route = '/directionClarity'
+
+export default DirectionClarity

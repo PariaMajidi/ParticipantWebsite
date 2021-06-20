@@ -12,6 +12,12 @@
   }
 }
 
+.column {
+  $padding: 3rem;
+  padding-right: $padding;
+  padding-left: $padding;
+}
+
 .button {
   $padding: 3rem;
   padding-right: $padding;

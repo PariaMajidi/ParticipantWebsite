@@ -30,6 +30,23 @@ export const fetchSounds = async folderId => {
   return []
 }
 
+export const fetchSubFolders = async folderId => {
+  try {
+    const result = await gapi.client.drive.files.list({
+      q: `mimeType = 'application/vnd.google-apps.folder' and '${folderId}' in parents`,
+      spaces: 'drive',
+      fields: 'files(id, name)',
+      pageSize: 1000,
+    })
+
+    return result?.result?.files || []
+  } catch (error) {
+    console.error('error', error)
+  }
+
+  return []
+}
+
 export const fetchDatabase = async folderId => {
   try {
     const result = await gapi.client.drive.files.list({

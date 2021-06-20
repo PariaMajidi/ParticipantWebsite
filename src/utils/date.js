@@ -1,7 +1,9 @@
 const getTime = () => {
-  const date = new Date();
+  const date = new Date()
 
-  return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}.${date.getMilliseconds()}`;
-};
+  return `${date
+    .toLocaleString('FR-fr')
+    .replace(',', '')}.${date.getMilliseconds()}`
+}
 
-module.exports = getTime;
+module.exports = getTime

@@ -5,53 +5,42 @@ import { useDispatch } from 'react-redux'
 import './App.css'
 
 import Ready from './Ready'
-import Start from './Start'
+import DefineParticipant from './DefineParticipant'
 import Vibration from './Vibration'
-import VibrationFeedback from './VibrationFeedback'
-import Confidence from './Confidence'
-import End from './End'
+import VibrationDirection from './VibrationDirection'
+import VibrationReadyToContinue from './VibrationReadyToContinue'
+import DirectionClarity from './DirectionClarity'
+import NotificationDifference from './NotificationDifference'
+import EndMenu from './EndMenu'
 import Login from './Login'
 import SelectFolder from './SelectFolder'
-import Setup from './Setup'
+import SetRepetitions from './SetRepetitions'
 import Menu from './Menu'
 import SubMenu from './SubMenu'
 import FileList from './FileList'
+import DefineUnilateralBilateral from './DefineUnilateralBilateral'
+import DefineGroup from './DefineGroup'
+import ConfirmGroup from './ConfirmGroup'
 
-import * as google from '../utils/google'
+import { initialize } from '../utils/google'
 
 const App = () => {
   const dispatch = useDispatch()
   const history = useHistory()
 
   useEffect(() => {
-    dispatch(
-      google.initialize(() => {
-        history.push('/menu')
-      })
-    )
+    dispatch(initialize(() => history.push('/menu')))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
     <div className='App'>
       <Switch>
-        <Route path='/ready'>
-          <Ready />
+        <Route path='/login'>
+          <Login />
         </Route>
-
-        <Route path='/vibration/:index/feel' exact>
-          <VibrationFeedback />
-        </Route>
-        <Route path='/confidence' exact>
-          <Confidence />
-        </Route>
-        <Route path='/vibration/:index' exact>
-          <Vibration />
-        </Route>
-        <Route path='/end' exact>
-          <End />
-        </Route>
-        <Route path='/start'>
-          <Start />
+        <Route path='/menu'>
+          <Menu />
         </Route>
         <Route path='/select-folder'>
           <SelectFolder />
@@ -59,18 +48,51 @@ const App = () => {
         <Route path='/submenu'>
           <SubMenu />
         </Route>
+        <Route path='/setRepetitions'>
+          <SetRepetitions />
+        </Route>
+        <Route path='/defineParticipant'>
+          <DefineParticipant />
+        </Route>
+        <Route path={DefineUnilateralBilateral.route}>
+          <DefineUnilateralBilateral />
+        </Route>
+        <Route path={DefineGroup.route}>
+          <DefineGroup />
+        </Route>
+        <Route path={ConfirmGroup.route}>
+          <ConfirmGroup />
+        </Route>
+
+        <Route path='/ready'>
+          <Ready />
+        </Route>
+
+        <Route path={Vibration.route} exact>
+          <Vibration />
+        </Route>
+        <Route path={VibrationDirection.route} exact>
+          <VibrationDirection />
+        </Route>
+        <Route path={VibrationReadyToContinue.route} exact>
+          <VibrationReadyToContinue />
+        </Route>
+
+        <Route path={NotificationDifference.route} exact>
+          <NotificationDifference />
+        </Route>
+        <Route path={DirectionClarity.route} exact>
+          <DirectionClarity />
+        </Route>
+
+        <Route path={EndMenu.route} exact>
+          <EndMenu />
+        </Route>
+
         <Route path='/file-list'>
           <FileList />
         </Route>
-        <Route path='/setup'>
-          <Setup />
-        </Route>
-        <Route path='/menu'>
-          <Menu />
-        </Route>
-        <Route path='/login'>
-          <Login />
-        </Route>
+
         <Redirect to='/login' />
       </Switch>
     </div>

@@ -4,12 +4,14 @@ import { useHistory } from 'react-router-dom'
 
 import Layout from './Layout'
 import Button from './Button'
-import { setFolderId } from '../redux/sounds'
+import { setCurrentFeedback } from '../redux/sounds'
 
 import style from './DefineParticipant.module.scss'
 
-const SelectFolder = () => {
-  const [folder, setFolder] = useState(localStorage.getItem('folderId'))
+import DefineUnilateralBilateral from './DefineUnilateralBilateral'
+
+const DefineParticipant = () => {
+  const [participant, setParticipant] = useState('FOO')
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -17,28 +19,26 @@ const SelectFolder = () => {
   const onSubmit = event => {
     event.preventDefault()
 
-    localStorage.setItem('folderId', folder)
-
-    dispatch(setFolderId(folder))
-    history.push('/submenu')
+    dispatch(setCurrentFeedback({ participant }))
+    history.push(DefineUnilateralBilateral.route)
   }
 
   return (
     <Layout>
       <form onSubmit={onSubmit} className={style.form}>
         <input
-          placeholder='Drive Folder id'
+          placeholder='Participant id'
           type='text'
-          defaultValue={folder}
           className={style.input}
-          onChange={e => setFolder(e.target.value)}
+          defaultValue={participant}
+          onChange={e => setParticipant(e.target.value)}
         />
-        <Button type='submit' disabled={!folder}>
-          Select folder
+        <Button type='submit' disabled={!participant}>
+          Start
         </Button>
       </form>
     </Layout>
   )
 }
 
-export default SelectFolder
+export default DefineParticipant

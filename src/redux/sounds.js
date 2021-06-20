@@ -8,6 +8,9 @@ const initialState = {
   repetitions: {},
   folderId: '',
   database: '',
+  isUnilateral: false,
+  group: '',
+  groupIndex: 0,
 }
 
 const slice = createSlice({
@@ -35,6 +38,16 @@ const slice = createSlice({
         repetition: state.repetitions[update.vibration],
       }
     },
+    setUnilateral(state, { payload }) {
+      state.isUnilateral = payload
+    },
+    setGroup(state, { payload }) {
+      state.group = payload
+      state.groupIndex = 1
+    },
+    incrementGroup(state) {
+      state.groupIndex += 1
+    },
   },
 })
 
@@ -43,6 +56,10 @@ export const {
   setCurrentFeedback,
   setFolderId,
   setDatabase,
+  setUnilateral,
+  setGroup,
+  setSubFolder,
+  incrementGroup,
 } = slice.actions
 
 // export const fetchSounds = () => async dispatch => {
@@ -62,30 +79,55 @@ export const getSoundCount = state => state.sounds.length
 export const getFolderId = state => state.folderId
 
 export const sendFeedback = () => (dispatch, getState) => {
-  const { feedback, database } = getState()
+  const state = getState()
+  const { feedback, database } = state
 
   return google.writeSheet(
     [
       feedback.vibration,
       feedback.index,
       feedback.participant,
-      feedback.direction,
+      feedback.signal,
       '',
-      feedback.selectionTime,
+      '',
       feedback.endAudioTime,
-      getState().repetitions[feedback.vibration],
+      feedback.selectionTime,
+      state.repetitions[feedback.vibration],
+      isUnilateral(state),
+      getGroup(state).name,
+      getGroupIndex(state),
     ],
     database
   )
 }
 
 export const sendGlobalFeedback = () => (dispatch, getState) => {
-  const { feedback, database } = getState()
+  const state = getState()
+  const { feedback, database } = state
 
   return google.writeSheet(
-    ['', '', feedback.participant, '', feedback.likertScale, '', '', ''],
+    [
+      '',
+      '',
+      feedback.participant,
+      '',
+      feedback.notificationDifferenceLikertScale,
+      feedback.directionClarityLikertScale,
+      '',
+      '',
+      '',
+      isUnilateral(state),
+      getGroup(state).name,
+      getGroupIndex(state),
+    ],
     database
   )
 }
+
+export const isUnilateral = state => state.isUnilateral
+
+export const getGroup = state => state.group
+
+export const getGroupIndex = state => state.groupIndex
 
 export const getDatabase = state => state.database

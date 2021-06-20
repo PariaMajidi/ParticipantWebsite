@@ -10,6 +10,8 @@ import getTime from '../utils/date'
 
 import style from './Vibration.module.scss'
 
+import VibrationDirection from './VibrationDirection'
+
 const Vibration = () => {
   const [countDown, setCountDown] = useState(3)
   const [isPlaying, play] = useState(false)
@@ -37,7 +39,7 @@ const Vibration = () => {
           index,
         })
       )
-      history.push(`/vibration/${index}/feel`)
+      history.push(VibrationDirection.route.replace(':index', index))
     })
 
     audio.current.addEventListener('error', event => {
@@ -79,5 +81,7 @@ const Vibration = () => {
     </Layout>
   )
 }
+
+Vibration.route = '/vibration/:index/play'
 
 export default Vibration

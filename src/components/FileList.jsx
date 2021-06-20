@@ -7,16 +7,7 @@ import { getFolderId } from '../redux/sounds'
 import { fetchSounds, downloadFile } from '../utils/google'
 
 import style from './FileList.module.scss'
-
-const byName = (a, b) => {
-  if (a.name < b.name) {
-    return -1
-  }
-  if (a.name > b.name) {
-    return 1
-  }
-  return 0
-}
+import byName from '../utils/sortByName'
 
 const FileList = () => {
   const [files, setFiles] = useState([])
