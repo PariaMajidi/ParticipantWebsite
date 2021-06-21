@@ -16,8 +16,8 @@ import cactusUrl from '../assets/cactus.png'
 import style from './Game.module.scss'
 
 const HEIGHT = 1000
-const SPEED = 30
-const JUMP_FORCE = 70
+const SPEED = 5
+const JUMP_FORCE = 80
 const GRAVITY = 9.81
 const CACTUS_Y = 500
 const SHOW_HIT_BOX = false
@@ -87,7 +87,7 @@ const Game = () => {
       return 0
     }
 
-    const time = (new Date() - jumpDateTime.current) / 60
+    const time = (new Date() - jumpDateTime.current) / 80
 
     const height = JUMP_FORCE * time - 0.5 * GRAVITY * time * time
 
@@ -160,13 +160,20 @@ const Game = () => {
         )
       }
 
+      if (cactusPositions.length === 0) {
+        cactusPositions.push(
+          canvas.width + 400 + randomIntFromInterval(0, canvas.width / 2)
+        )
+      }
+
       if (
-        cactusPositions.length === 0 ||
         cactusPositions[cactusPositions.length - 1] - position.x <
-          dinosaurBaseX + canvas.width / 2
+        canvas.width / 2
       ) {
         cactusPositions.push(
-          position.x + canvas.width + randomIntFromInterval(0, canvas.width / 4)
+          cactusPositions[cactusPositions.length - 1] +
+            canvas.width / 2 +
+            randomIntFromInterval(0, canvas.width / 2)
         )
       }
 
@@ -284,12 +291,12 @@ const Game = () => {
         position = { x: canvas.width / 3, y: 0 }
 
         setTimeout(() => {
-          interval = setInterval(run, 20)
+          interval = setInterval(run, 10)
         }, 3000)
       }
     }
 
-    interval = setInterval(run, 20)
+    interval = setInterval(run, 10)
 
     const listener = event => {
       if (event.code === 'Space') {
