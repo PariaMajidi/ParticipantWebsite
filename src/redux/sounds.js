@@ -33,6 +33,10 @@ const slice = createSlice({
           (state.repetitions[update.vibration] || 0) + 1
       }
 
+      if (update.participant !== state.feedback.participant) {
+        state.score = 0
+      }
+
       state.feedback = {
         ...state.feedback,
         ...update,
