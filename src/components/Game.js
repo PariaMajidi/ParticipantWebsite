@@ -4,7 +4,13 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import Layout from './Layout'
 import Button from './Button'
-import { getSound, setCurrentFeedback } from '../redux/sounds'
+import {
+  getSound,
+  setCurrentFeedback,
+  incrementScore,
+  getScore,
+  reinitializeScore,
+} from '../redux/sounds'
 import getTime from '../utils/date'
 import randomIntFromInterval from '../utils/random'
 import VibrationDirection from './VibrationDirection'
@@ -21,7 +27,7 @@ const JUMP_FORCE = 80
 const GRAVITY = 9.81
 const CACTUS_Y = 500
 const SHOW_HIT_BOX = false
-const AVERAGE_TIMING = 20000
+const AVERAGE_TIMING = 12000
 const NOTIFICATION_PITCH = 6000
 
 const loadImage = (imageUrl, callback) => {
@@ -37,6 +43,10 @@ const Game = () => {
   const sound = useSelector(getSound(parseInt(index, 10) - 1))
   const dispatch = useDispatch()
 
+  const gameOvers = useRef(0)
+
+  const score = useSelector(getScore)
+
   useEffect(() => {
     if (!sound?.name) return
 
@@ -44,12 +54,19 @@ const Game = () => {
 
     const audio = new Audio(sound?.url)
 
+    dispatch(
+      setCurrentFeedback({
+        vibration: sound?.name,
+        startGameTime: getTime(),
+        index,
+      })
+    )
+
     audio.addEventListener('ended', event => {
       dispatch(
         setCurrentFeedback({
-          vibration: sound?.name,
           endAudioTime: getTime(),
-          index,
+          gameOverCount: gameOvers.current,
         })
       )
       history.push(VibrationDirection.route.replace(':index', index))
@@ -117,6 +134,7 @@ const Game = () => {
     let dinosaur
     let background
     let cactus
+    let tempScore = score
 
     loadImage(backgroundUrl, function () {
       background = this
@@ -180,13 +198,15 @@ const Game = () => {
       cactusPositions = cactusPositions.filter(p => p - position.x > -400)
 
       cactusPositions.forEach(cactusPosition => {
+        const cactusPositionX = cactusPosition - position.x
+
         ctx.drawImage(
           cactus,
           0,
           0,
           cactus.width,
           cactus.height,
-          cactusPosition - position.x,
+          cactusPositionX,
           CACTUS_Y,
           cactus.width / 2,
           cactus.height / 2
@@ -197,12 +217,20 @@ const Game = () => {
           ctx.lineWidth = '6'
           ctx.strokeStyle = 'red'
           ctx.rect(
-            cactusPosition - position.x,
+            cactusPositionX,
             CACTUS_Y,
             cactus.width / 2,
             cactus.height / 2
           )
           ctx.stroke()
+        }
+
+        if (
+          cactusPositionX < dinosaurBaseX &&
+          cactusPositionX >= dinosaurBaseX - SPEED
+        ) {
+          tempScore += 1
+          dispatch(incrementScore())
         }
       })
 
@@ -234,7 +262,7 @@ const Game = () => {
       }
 
       if (new Date() - gameStartDateTime < 3000) {
-        ctx.font = 'bold 140px Arial'
+        ctx.font = 'bold 140px Courier'
         ctx.fillStyle = 'blue'
         ctx.textAlign = 'center'
         ctx.fillText('Avoid the cactus', canvas.width / 2, canvas.height / 2)
@@ -281,14 +309,22 @@ const Game = () => {
         )
       )
 
+      ctx.font = 'bold 80px Courier'
+      ctx.fillStyle = 'black'
+      ctx.textAlign = 'left'
+      ctx.fillText(tempScore, 20, 70)
+
       if (hitted) {
-        ctx.font = 'bold 140px Arial'
+        ctx.font = 'bold 140px Courier'
         ctx.fillStyle = 'red'
         ctx.textAlign = 'center'
         ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2)
         clearInterval(interval)
         cactusPositions = []
         position = { x: canvas.width / 3, y: 0 }
+
+        gameOvers.current += 1
+        dispatch(reinitializeScore())
 
         setTimeout(() => {
           interval = setInterval(run, 10)

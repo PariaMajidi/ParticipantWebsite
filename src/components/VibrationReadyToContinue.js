@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 
 import Layout from './Layout'
@@ -13,16 +13,23 @@ const VibrationReadyToContinue = () => {
 
   const { index } = useParams()
 
-  return (
-    <Layout title='Are you ready to continue?'>
-      <Button
-        className={style.button}
-        onClick={() => history.push(Game.route.replace(':index', index))}
-      >
-        Yes
-      </Button>
-    </Layout>
-  )
+  const [seconds, setSeconds] = useState(2)
+
+  useEffect(() => {
+    let tempSeconds = seconds
+    const interval = setInterval(() => {
+      tempSeconds -= 1
+      setSeconds(tempSeconds)
+
+      if (tempSeconds === 0) {
+        history.push(Game.route.replace(':index', index))
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [])
+
+  return <Layout title='Game will restart in'>{seconds}s</Layout>
 }
 
 VibrationReadyToContinue.route = '/vibration/:index/ready'

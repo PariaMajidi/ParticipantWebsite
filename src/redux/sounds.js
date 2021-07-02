@@ -11,6 +11,7 @@ const initialState = {
   isUnilateral: false,
   group: '',
   groupIndex: 0,
+  score: 0,
 }
 
 const slice = createSlice({
@@ -48,6 +49,12 @@ const slice = createSlice({
     incrementGroup(state) {
       state.groupIndex += 1
     },
+    incrementScore(state) {
+      state.score += 1
+    },
+    reinitializeScore(state) {
+      state.score = 0
+    },
   },
 })
 
@@ -60,6 +67,8 @@ export const {
   setGroup,
   setSubFolder,
   incrementGroup,
+  incrementScore,
+  reinitializeScore,
 } = slice.actions
 
 // export const fetchSounds = () => async dispatch => {
@@ -80,7 +89,7 @@ export const getFolderId = state => state.folderId
 
 export const sendFeedback = () => (dispatch, getState) => {
   const state = getState()
-  const { feedback, database } = state
+  const { feedback, database, score } = state
 
   return google.writeSheet(
     [
@@ -90,12 +99,15 @@ export const sendFeedback = () => (dispatch, getState) => {
       feedback.signal,
       '',
       '',
+      feedback.startGameTime,
       feedback.endAudioTime,
       feedback.selectionTime,
       state.repetitions[feedback.vibration],
       isUnilateral(state),
       getGroup(state).name,
       getGroupIndex(state),
+      feedback.gameOverCount,
+      score,
     ],
     database
   )
@@ -116,9 +128,12 @@ export const sendGlobalFeedback = () => (dispatch, getState) => {
       '',
       '',
       '',
+      '',
       isUnilateral(state),
       getGroup(state).name,
       getGroupIndex(state),
+      '',
+      '',
     ],
     database
   )
@@ -131,3 +146,5 @@ export const getGroup = state => state.group
 export const getGroupIndex = state => state.groupIndex
 
 export const getDatabase = state => state.database
+
+export const getScore = state => state.score
