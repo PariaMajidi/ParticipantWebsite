@@ -324,6 +324,7 @@ const Game = () => {
         position = { x: canvas.width / 3, y: 0 }
 
         gameOvers.current += 1
+        tempScore = 0
         dispatch(reinitializeScore())
 
         setTimeout(() => {
