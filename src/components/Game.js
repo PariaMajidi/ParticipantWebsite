@@ -50,8 +50,6 @@ const Game = () => {
   useEffect(() => {
     if (!sound?.name) return
 
-    console.log('sound', sound)
-
     const audio = new Audio(sound?.url)
 
     dispatch(
@@ -80,8 +78,6 @@ const Game = () => {
       AVERAGE_TIMING - NOTIFICATION_PITCH,
       AVERAGE_TIMING + NOTIFICATION_PITCH
     )
-
-    console.log('timing', timing)
 
     const timeout = setTimeout(() => {
       audio
