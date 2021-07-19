@@ -21,6 +21,7 @@ import FileList from './FileList'
 import DefineUnilateralBilateral from './DefineUnilateralBilateral'
 import DefineGroup from './DefineGroup'
 import ConfirmGroup from './ConfirmGroup'
+import FindAmplitude from './FindAmplitude'
 import Game from './Game'
 
 import { initialize } from '../utils/google'
@@ -54,6 +55,9 @@ const App = () => {
         </Route>
         <Route path='/defineParticipant'>
           <DefineParticipant />
+        </Route>
+        <Route path={FindAmplitude.route}>
+          <FindAmplitude />
         </Route>
         <Route path={DefineUnilateralBilateral.route}>
           <DefineUnilateralBilateral />

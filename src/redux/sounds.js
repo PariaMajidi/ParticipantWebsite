@@ -12,6 +12,7 @@ const initialState = {
   group: '',
   groupIndex: 0,
   score: 0,
+  amplitude: 0,
 }
 
 const slice = createSlice({
@@ -96,7 +97,7 @@ export const getFolderId = state => state.folderId
 
 export const sendFeedback = () => (dispatch, getState) => {
   const state = getState()
-  const { feedback, database, score } = state
+  const { feedback, database, score, amplitude } = state
 
   return google.writeSheet(
     [
@@ -115,6 +116,7 @@ export const sendFeedback = () => (dispatch, getState) => {
       getGroupIndex(state),
       feedback.gameOverCount,
       score,
+      feedback.amplitude,
     ],
     database
   )
@@ -122,7 +124,7 @@ export const sendFeedback = () => (dispatch, getState) => {
 
 export const sendGlobalFeedback = () => (dispatch, getState) => {
   const state = getState()
-  const { feedback, database } = state
+  const { feedback, database, amplitude } = state
 
   return google.writeSheet(
     [
@@ -141,6 +143,7 @@ export const sendGlobalFeedback = () => (dispatch, getState) => {
       getGroupIndex(state),
       '',
       '',
+      feedback.amplitude,
     ],
     database
   )

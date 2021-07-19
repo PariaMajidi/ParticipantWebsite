@@ -8,7 +8,7 @@ import { setCurrentFeedback } from '../redux/sounds'
 
 import style from './DefineParticipant.module.scss'
 
-import DefineUnilateralBilateral from './DefineUnilateralBilateral'
+import FindAmplitude from './FindAmplitude'
 
 const DefineParticipant = () => {
   const [participant, setParticipant] = useState('')
@@ -20,7 +20,7 @@ const DefineParticipant = () => {
     event.preventDefault()
 
     dispatch(setCurrentFeedback({ participant }))
-    history.push(DefineUnilateralBilateral.route)
+    history.push(FindAmplitude.route)
   }
 
   return (

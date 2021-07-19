@@ -20,10 +20,12 @@ const DefineGroup = () => {
   const [isFetching, setFetching] = useState(true)
 
   useEffect(() => {
-    fetchSubFolders(folderId).then(folders => {
-      setSubFolders(folders)
-      setFetching(false)
-    })
+    fetchSubFolders(folderId)
+      .then(folders => folders.filter(f => f.name !== 'Balancing'))
+      .then(folders => {
+        setSubFolders(folders)
+        setFetching(false)
+      })
   }, [folderId])
 
   return (
