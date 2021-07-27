@@ -6,6 +6,7 @@ import Layout from './Layout'
 import Button from './Button'
 import { setCurrentFeedback, getFolderId } from '../redux/sounds'
 import { fetchSubFolders, fetchSounds } from '../utils/google'
+import { nothingFound } from '../utils/message'
 
 import style from './FindAmplitude.module.scss'
 import byName from '../utils/sortByName'
@@ -24,10 +25,7 @@ const FindAmplitude = () => {
   useEffect(() => {
     fetchSubFolders(folderId)
       .then(folders => folders.find(f => f.name === 'Balancing'))
-      .then(folder => {
-        console.log('folder', folder)
-        return fetchSounds(folder.id)
-      })
+      .then(folder => fetchSounds(folder.id))
       .then(files => {
         console.log('files', files)
         setFiles(files)
@@ -44,7 +42,9 @@ const FindAmplitude = () => {
 
   return (
     <Layout>
-      <div className={style.detected}>{isFetching ? 'Fetching...' : ''}</div>
+      <div className={style.detected}>
+        {isFetching ? 'Fetching...' : nothingFound(files)}
+      </div>
       {files.sort(byName).map(file => (
         <div className={style.sound} key={file.id}>
           <audio controls src={file.webContentLink} type='audio/wav'>

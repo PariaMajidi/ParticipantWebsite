@@ -97,7 +97,7 @@ export const getFolderId = state => state.folderId
 
 export const sendFeedback = () => (dispatch, getState) => {
   const state = getState()
-  const { feedback, database, score, amplitude } = state
+  const { feedback, database, score } = state
 
   return google.writeSheet(
     [
@@ -124,7 +124,7 @@ export const sendFeedback = () => (dispatch, getState) => {
 
 export const sendGlobalFeedback = () => (dispatch, getState) => {
   const state = getState()
-  const { feedback, database, amplitude } = state
+  const { feedback, database } = state
 
   return google.writeSheet(
     [
@@ -158,3 +158,5 @@ export const getGroupIndex = state => state.groupIndex
 export const getDatabase = state => state.database
 
 export const getScore = state => state.score
+
+export const getFeedback = state => state.feedback

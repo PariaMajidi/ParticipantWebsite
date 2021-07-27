@@ -8,20 +8,26 @@ import ButtonList from './ButtonList'
 import ConfirmGroup from './ConfirmGroup'
 
 import { fetchSubFolders } from '../utils/google'
-import { setGroup, getFolderId } from '../redux/sounds'
+import { setGroup, getFolderId, getFeedback } from '../redux/sounds'
+import { nothingFound } from '../utils/message'
 
 const DefineGroup = () => {
   const history = useHistory()
   const dispatch = useDispatch()
 
   const folderId = useSelector(getFolderId)
+  const { amplitude } = useSelector(getFeedback)
 
   const [subFolders, setSubFolders] = useState([])
   const [isFetching, setFetching] = useState(true)
 
   useEffect(() => {
     fetchSubFolders(folderId)
-      .then(folders => folders.filter(f => f.name !== 'Balancing'))
+      .then(folders =>
+        folders.filter(
+          f => f.name !== 'Balancing' && f.name.includes(amplitude)
+        )
+      )
       .then(folders => {
         setSubFolders(folders)
         setFetching(false)
@@ -30,7 +36,7 @@ const DefineGroup = () => {
 
   return (
     <Layout>
-      {isFetching ? 'Fetching...' : ''}
+      {isFetching ? 'Fetching...' : nothingFound(subFolders)}
       <ButtonList>
         {subFolders.map(subFolder => (
           <Button

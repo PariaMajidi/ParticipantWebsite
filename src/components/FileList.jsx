@@ -5,6 +5,7 @@ import Layout from './Layout'
 import { getFolderId } from '../redux/sounds'
 
 import { fetchSounds, downloadFile } from '../utils/google'
+import { nothingFound } from '../utils/message'
 
 import style from './FileList.module.scss'
 import byName from '../utils/sortByName'
@@ -36,7 +37,11 @@ const FileList = () => {
   }, [])
   return (
     <Layout title='Sounds'>
-      {loading ? <span className={style.loading}>loading</span> : null}
+      {loading ? (
+        <span className={style.loading}>loading</span>
+      ) : (
+        nothingFound(files)
+      )}
       {files.sort(byName).map(file => (
         <div className={style.sound} key={file.id}>
           <div className={style.name}>{file.name}</div>
