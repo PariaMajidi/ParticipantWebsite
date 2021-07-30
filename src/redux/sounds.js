@@ -99,54 +99,62 @@ export const sendFeedback = () => (dispatch, getState) => {
   const state = getState()
   const { feedback, database, score } = state
 
-  return google.writeSheet(
-    [
-      feedback.vibration,
-      feedback.index,
-      feedback.participant,
-      feedback.signal,
-      '',
-      '',
-      feedback.startGameTime,
-      feedback.endAudioTime,
-      feedback.selectionTime,
-      state.repetitions[feedback.vibration],
-      isUnilateral(state),
-      getGroup(state).name,
-      getGroupIndex(state),
-      feedback.gameOverCount,
-      score,
-      feedback.amplitude,
-    ],
-    database
-  )
+  const row = [
+    feedback.vibration,
+    feedback.index,
+    feedback.participant,
+    feedback.signal,
+    '',
+    '',
+    feedback.startGameTime,
+    feedback.endAudioTime,
+    feedback.selectionTime,
+    state.repetitions[feedback.vibration],
+    isUnilateral(state),
+    getGroup(state).name,
+    getGroupIndex(state),
+    feedback.gameOverCount,
+    score,
+    feedback.amplitude,
+  ]
+
+  const rawLogs = localStorage.getItem('logs') || 'null'
+
+  const logs = JSON.parse(rawLogs) || []
+
+  localStorage.setItem('logs', JSON.stringify([...logs, row]))
+
+  return google.writeSheet(row, database)
 }
 
 export const sendGlobalFeedback = () => (dispatch, getState) => {
   const state = getState()
   const { feedback, database } = state
 
-  return google.writeSheet(
-    [
-      '',
-      '',
-      feedback.participant,
-      '',
-      feedback.notificationDifferenceLikertScale,
-      feedback.directionClarityLikertScale,
-      '',
-      '',
-      '',
-      '',
-      isUnilateral(state),
-      getGroup(state).name,
-      getGroupIndex(state),
-      '',
-      '',
-      feedback.amplitude,
-    ],
-    database
-  )
+  const row = [
+    '',
+    '',
+    feedback.participant,
+    '',
+    feedback.notificationDifferenceLikertScale,
+    feedback.directionClarityLikertScale,
+    '',
+    '',
+    '',
+    '',
+    isUnilateral(state),
+    getGroup(state).name,
+    getGroupIndex(state),
+    '',
+    '',
+    feedback.amplitude,
+  ]
+
+  const logs = JSON.parse(localStorage.getItem('logs') || 'null') || []
+
+  localStorage.setItem('logs', JSON.stringify([...logs, row]))
+
+  return google.writeSheet(row, database)
 }
 
 export const isUnilateral = state => state.isUnilateral

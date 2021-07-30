@@ -1,5 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
+import { saveAs } from 'file-saver'
 
 import * as google from '../utils/google'
 
@@ -10,6 +11,16 @@ import ButtonList from './ButtonList'
 
 const Menu = () => {
   const history = useHistory()
+
+  const download = () => {
+    const logs = JSON.parse(localStorage.getItem('logs') || 'null') || []
+
+    var blob = new Blob([logs.join(',\n')], {
+      type: 'text/plain;charset=utf-8',
+    })
+
+    saveAs(blob, 'data.csv')
+  }
 
   return (
     <Layout>
@@ -24,6 +35,7 @@ const Menu = () => {
         >
           Logout
         </Button>
+        <Button onClick={download}>Download backup data</Button>
       </ButtonList>
     </Layout>
   )
